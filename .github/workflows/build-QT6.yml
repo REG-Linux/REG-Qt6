@@ -78,6 +78,7 @@ jobs:
           EOF
           chmod 755 free_some_space.sh
           
+          rm -rf ./REG-LINUX ./REG-QT6-COMPILED
           git clone --branch master "https://github.com/REG-Linux/REG-Linux.git" ./REG-LINUX
           cd REG-LINUX
           git submodule init
