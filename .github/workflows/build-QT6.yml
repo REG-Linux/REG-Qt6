@@ -69,9 +69,10 @@ jobs:
           cat << EOF > free_some_space.sh
           #!/bin/bash
           cd "\$1"
+          find ./ -type f -not -path "*qt6*" -iname "*.o" -delete
           ESCAPELOOP=0
-          while test "\$(df -BG --output=avail ./ | tail -1 | grep -o "[0-9]*" | head -1)" -lt 6 ; do
-            find ./ -mindepth 1 -maxdepth 1 -type d -not \( -iname "*config*" -or -iname "*headers*" -or -iname "toolchain*" -or -iname "*qt6*" \) -exec du -sk -- {} \; 2>/dev/null | sort -hr | head -1 | cut -f 2- | xargs -d "\\n" -I{} -n1 -rt -- find {} -type f -not \( -iname ".stamp*" -or -iname ".br*" -iname ".files*" -or -or -iname "*config*" -or -iname "Makefile*" -or -iname "*autoconf*" -or -iname "*auto.conf*" -or -iname "CMakeLists*" \) -delete
+          while test "\$(df -BG --output=avail ./ | tail -1 | grep -o "[0-9]*" | head -1)" -lt 7 ; do
+            find ./ -mindepth 1 -maxdepth 1 -type d -not \( -iname "*headers*" -or -iname "*qt6*" \) -exec du -sk -- {} \; 2>/dev/null | sort -hr | head -1 | cut -f 2- | xargs -d "\\n" -I{} -n1 -rt -- find {} -type f -not \( -ipath "*config*" -or -iname ".stamp*" -or -iname ".br*" -iname ".files*" -or -iname "Makefile*" -or -iname "*autoconf*" -or -iname "*auto.conf*" -or -iname "CMakeLists*" \) -delete
             ((ESCAPELOOP++))
             [[ "\$ESCAPELOOP" -lt 10 ]] || break
           done
